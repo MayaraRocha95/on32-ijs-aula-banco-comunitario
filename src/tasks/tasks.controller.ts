@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { TasksService } from './tasks.service';
+import { Task } from './task.model';
 
 @Controller('tasks')
 export class TasksController {
@@ -48,4 +49,36 @@ export class TasksController {
             message: 'Task deletada com sucesso',
         };
     }
+
+    @Put(':id')
+    updateTask(
+        @Param('id') id: string,
+        @Body() body: { titulo: string; descricao: string; status: 'ABERTO' | 'FEITA' },
+    ) {
+        const task = this.tasksService.updateTask(id, body.titulo, body.descricao, body.status);
+
+        if (!task) {
+            throw new HttpException('Task não encontrada', HttpStatus.NOT_FOUND);
+        }
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'Task atualizada com sucesso',
+            data: task,
+        }
+    }
+
+    @Patch('/edit/:id')
+    patchtask(
+        @Param('id') id: string,
+        @Query() updates: Partial<Task>,
+    ) {
+        const task = this.tasksService.patchTask(id, updates);
+        return {
+            statusCode: HttpStatus.OK,
+            message: 'Task atualizada com sucesso',
+            data: task,
+        }
+    }
+
+
 }
