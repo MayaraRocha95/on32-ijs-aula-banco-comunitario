@@ -1,0 +1,24 @@
+import { Injectable } from '@nestjs/common';
+import { Task } from './task.model';
+
+@Injectable()
+export class TasksService {
+    deleteTaskById(id: string) {
+        throw new Error('Method not implemented.');
+    }
+    private tasks: Task[] = [];
+
+    createTask(titulo: string, descricao: string): Task {
+        const newTask = new Task(titulo, descricao);
+        this.tasks.push(newTask);
+        return newTask;
+    }
+
+    getAllTasks(): Task[] {
+        return this.tasks;
+    }
+
+    getTaskById(id: string): Task {
+        return this.tasks.find((task) => task.id === id);
+    }
+}
