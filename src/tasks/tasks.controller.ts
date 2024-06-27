@@ -44,7 +44,7 @@ export class TasksController {
             throw new HttpException('Task não encontrada', HttpStatus.NOT_FOUND);
         }
         return {
-            statusCode: HttpStatus.OK,
+            statusCode: HttpStatus.NO_CONTENT,
             message: 'Task deletada com sucesso',
         };
     }
